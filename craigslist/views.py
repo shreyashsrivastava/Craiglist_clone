@@ -5,15 +5,16 @@ from requests.compat import quote_plus
 from . import models
 import urllib
 
-BASE_CRAIGSLIST_URL = 'https://losangeles.craigslist.org/search/?query={}'
+BASE_CRAIGSLIST_URL = 'https://bangalore.craigslist.org/search/?query={}'
 
 def home(request):
     return render(request,'craigslist/base.html')
 
 def new_search(request):
     search = request.POST.get('search')
+    print(search)
     models.Search.objects.create(search=search)
-    final_url = BASE_CRAIGSLIST_URL.format(quote_plus(search))
+    final_url = BASE_CRAIGSLIST_URL.format(quote_plus(str(search)))
     response = requests.get(final_url)
     data = response.text
     soup = BeautifulSoup(data, features='html.parser')
